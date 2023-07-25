@@ -1,0 +1,24 @@
+.SignUp {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.SignUpCard {
+  padding: 5%;
+}
+
+.SignUpButtonContainer {
+  width: 100%;
+  padding-top: 5%;
+  display: flex;
+  justify-content: space-between;
+  caret-color: transparent;
+}
+
+.SignUpHeader {
+  width: 100%;
+  padding-bottom: 5%;
+  caret-color: transparent;
+}
