@@ -13,7 +13,16 @@ const theme = createTheme({
       light: "#93a8e0",
     },
     secondary: {
-      main: "#DDDDDD",
+      main: "#dddddd",
+    },
+    red: {
+      main: "#ff5151",
+    },
+    black: {
+      main: "#000000",
+    },
+    green: {
+      main: "#47b961",
     },
   },
 });

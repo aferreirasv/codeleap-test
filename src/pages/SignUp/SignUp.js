@@ -1,7 +1,8 @@
 import "./SignUp.css";
 import { useState } from "react";
-import { Paper, TextField, Typography, Button } from "@mui/material";
+import { Paper, TextField, Typography } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
+import TextButton from "../../components/TextButton/TextButton";
 
 const SignUp = (props) => {
   const [inputValue, setInputValue] = useState("");
@@ -24,7 +25,9 @@ const SignUp = (props) => {
               <Typography
                 variant="body1"
                 align="start"
-                sx={{ fontWeight: "800" }}
+                sx={{
+                  fontWeight: "800",
+                }}
               >
                 Welcome to CodeLeap network!
               </Typography>
@@ -41,21 +44,12 @@ const SignUp = (props) => {
             </div>
             <div className="SignUpButtonContainer">
               <div />
-              <Button
-                variant="contained"
+              <TextButton
                 disabled={!inputValue}
-                sx={{ right: "0px", width: "25%" }}
-                size="small"
+                text="Enter"
                 onClick={handleSubmit}
-              >
-                <Typography
-                  variant="body"
-                  color={"white"}
-                  sx={{ fontWeight: "600" }}
-                >
-                  Enter
-                </Typography>
-              </Button>
+                color="primary"
+              />
             </div>
           </div>
         </Paper>

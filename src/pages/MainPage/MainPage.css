@@ -1,0 +1,46 @@
+.MainPageRoot {
+  width: 100%;
+  height: 100%;
+}
+
+.MainPageHeader {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  justify-content: space-between;
+  background-color: #7696ed;
+  display: flex;
+  align-items: center;
+}
+
+.MainPageContent {
+  width: 100%;
+  height: 100%;
+  background-color: #fafafa;
+  display: grid;
+  align-content: center;
+  justify-content: center;
+}
+
+.MainPageNewPostForm {
+  padding-left: clamp(10px, 5%, 25px);
+  padding-right: clamp(10px, 5%, 25px);
+  padding-top: clamp(5px, 5%, 20px);
+  padding-bottom: clamp(5px, 5%, 20px);
+  justify-content: start;
+}
+
+.MainPageCreateButtonContainer {
+  width: 100%;
+  padding-top: clamp(5px, 5%, 20px);
+  display: flex;
+  justify-content: space-between;
+  caret-color: transparent;
+}
+
+.MainPageInputContainer {
+  padding-top: clamp(5px, 5%, 20px);
+}
