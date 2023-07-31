@@ -33,6 +33,11 @@
   justify-content: start;
 }
 
+.MainPagePostList {
+  margin-top: clamp(5px, 3%, 15px);
+  width: 100%;
+}
+
 .MainPageCreateButtonContainer {
   width: 100%;
   padding-top: clamp(5px, 5%, 20px);

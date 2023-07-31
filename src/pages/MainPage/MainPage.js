@@ -2,10 +2,27 @@ import { Typography, Paper, TextField, IconButton } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "./MainPage.css";
 import TextButton from "../../components/TextButton/TextButton";
+import Post from "../../components/Post/Post";
 import { useNavigate } from "react-router-dom";
 
 const MainPage = (props) => {
   const navigate = useNavigate();
+  const arrayMock = [
+    {
+      title: "Lorem Ipsum 1",
+      author: "Alan",
+      timestamp: new Date("2023-07-31T20:04:00"),
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam suscipit risus sed tempor porta. Mauris volutpat diam mauris, sit amet malesuada leo congue eget.",
+    },
+    {
+      title: "Lorem Ipsum 2",
+      author: "Renan",
+      timestamp: new Date("2023-07-31T17:44:00"),
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam suscipit risus sed tempor porta. Mauris volutpat diam mauris, sit amet malesuada leo congue eget.",
+    },
+  ];
 
   return (
     <>
@@ -13,7 +30,7 @@ const MainPage = (props) => {
         <header className="MainPageHeader">
           <Typography
             variant="body1"
-            align="start"
+            align="left"
             sx={{ fontWeight: "600" }}
             color="white"
           >
@@ -43,7 +60,7 @@ const MainPage = (props) => {
               <div className="MainPageNewPostForm">
                 <Typography
                   variant="body1"
-                  align="start"
+                  align="left"
                   sx={{
                     fontWeight: "700",
                   }}
@@ -51,13 +68,13 @@ const MainPage = (props) => {
                   What's on your mind?
                 </Typography>
                 <div className="MainPageInputContainer">
-                  <Typography align="start" variant="body2">
+                  <Typography align="left" variant="body2">
                     Title
                   </Typography>
                   <TextField placeholder="Hello World" fullWidth size="small" />
                 </div>
                 <div className="MainPageInputContainer">
-                  <Typography align="start" variant="body2">
+                  <Typography align="left" variant="body2">
                     Content
                   </Typography>
                   <TextField
@@ -79,10 +96,14 @@ const MainPage = (props) => {
               </div>
             </Paper>
           </div>
-          <div className="MainPagePostList">
-            <Paper sx={{ width: "90vw", maxWidth: "500px" }}>
-              TODO:list will be here
-            </Paper>
+          <div>
+            {arrayMock.map((post) => {
+              return (
+                <div className="MainPagePostList">
+                  <Post post={post} user={"Alan"} />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
