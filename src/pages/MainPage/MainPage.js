@@ -23,33 +23,30 @@ const MainPage = (props) => {
   const [nextPage, setNextPage] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [newPost, setNewPost] = useState({ title: "", content: "" });
-
+  const smoothScroll = (y) => {
+    if (y > 0) {
+      return setTimeout(() => {
+        window.scrollTo(0, y);
+        smoothScroll(y - scrollPosition / 10);
+      }, 10);
+    }
+    window.scrollTo(0, 0);
+  };
   const handleScroll = () => {
     setScrollPosition(window.scrollY);
   };
-  const handleScrollButton = (e) => {
-    let smoothThreshold = 10000;
-    if (scrollPosition > smoothThreshold) {
-      window.scrollTo({ top: 0 });
-      return;
-    }
-    const smoothScroll = (y) => {
-      if (y > 0) {
-        return setTimeout(() => {
-          window.scrollTo(0, y);
-          smoothScroll(y - scrollPosition / 10);
-        }, 10);
-      }
-      window.scrollTo(0, 0);
-    };
-    smoothScroll(scrollPosition);
+  const handleScrollButton = () => {
+    const smoothThreshold = 10000;
     setScrollPosition(0);
+    if (scrollPosition > smoothThreshold) {
+      return window.scrollTo(0, 0);
+    }
+    smoothScroll(scrollPosition);
   };
   const handleNewPostChange = (e) => {
     setNewPost((prev) => {
       let post = Object.assign({}, prev);
       post[e.target.name] = e.target.value;
-      console.log(post);
       return post;
     });
   };
@@ -57,8 +54,7 @@ const MainPage = (props) => {
     try {
       let data = newPost;
       data.username = username;
-      let response = await createPost(data);
-      console.log(response);
+      await createPost(data);
       fetchPosts();
     } catch (e) {
       console.error(e);
