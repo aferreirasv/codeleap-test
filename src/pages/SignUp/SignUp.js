@@ -3,9 +3,13 @@ import { useState } from "react";
 import { Paper, TextField, Typography } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
 import TextButton from "../../components/TextButton/TextButton";
+import { useSelector, useDispatch } from "react-redux";
+import { update } from "../../redux/username";
 
 const SignUp = (props) => {
   const [inputValue, setInputValue] = useState("");
+  const username = useSelector((state) => state.username.value);
+  const dispatch = useDispatch();
 
   const handleUsername = (e) => {
     setInputValue(e.currentTarget.value);
@@ -13,11 +17,16 @@ const SignUp = (props) => {
 
   const navigate = useNavigate();
   const handleSubmit = (e) => {
+    dispatch(update(inputValue));
     navigate("/");
   };
   return (
     <>
-      {false ? <Navigate to="/" /> : null /* Check if user is logged in*/}
+      {
+        username !== "" ? (
+          <Navigate to="/" />
+        ) : null /* Check if user is logged in*/
+      }
       <div className="SignUp">
         <Paper sx={{ width: "90vw", maxWidth: "500px" }}>
           <div className="SignUpCard">

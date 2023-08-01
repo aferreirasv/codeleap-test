@@ -4,11 +4,10 @@ import {
   Typography,
   CardHeader,
   CardContent,
-  CardActions,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import TimeHelper from "../../actions/utils/TimeHelper";
+import timeHelper from "../../actions/utils/timeHelper";
 import "./Post.css";
 
 const Post = ({ post, user }) => {
@@ -48,7 +47,7 @@ const Post = ({ post, user }) => {
       <CardContent>
         <div className="PostInfo">
           <Typography>{"@" + post.username}</Typography>
-          <Typography>{TimeHelper(new Date(post.created_datetime))}</Typography>
+          <Typography>{timeHelper(new Date(post.created_datetime))}</Typography>
         </div>
         <div>
           <Typography align="left" sx={{ wordBreak: "break-all" }}>

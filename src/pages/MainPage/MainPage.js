@@ -15,10 +15,14 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect, useState } from "react";
 import { listPosts, loadPage } from "../../actions/api/list";
 import { createPost } from "../../actions/api/create";
+import { useSelector, useDispatch } from "react-redux";
+import { update } from "../../redux/username";
+import { Navigate } from "react-router-dom";
 
 const MainPage = (props) => {
-  const username = "Alan";
+  const username = useSelector((state) => state.username.value);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
   const [nextPage, setNextPage] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -60,7 +64,10 @@ const MainPage = (props) => {
       console.error(e);
     }
   };
-
+  const handleLogout = () => {
+    dispatch(update(""));
+    navigate("/signup");
+  };
   const fetchPosts = async () => {
     try {
       let response = await listPosts();
@@ -94,6 +101,7 @@ const MainPage = (props) => {
 
   return (
     <>
+      {username === "" ? <Navigate to="/signup" /> : null}
       <div className="MainPageRoot">
         {scrollPosition > 300 ? (
           <div className="ScrollUpButtonContainer">
@@ -122,12 +130,7 @@ const MainPage = (props) => {
             CodeLeap Network
           </Typography>
           <div className="HeaderButtons">
-            <IconButton
-              aria-label="logout"
-              onClick={() => {
-                navigate("/signup");
-              }}
-            >
+            <IconButton aria-label="logout" onClick={handleLogout}>
               <LogoutIcon sx={{ color: "white" }} />
             </IconButton>
           </div>

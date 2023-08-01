@@ -1,5 +1,5 @@
 // SMALLER THAN MOMENT.JS
-const TimeHelper = (date) => {
+const timeHelper = (date) => {
   const intervals = {
     31536000: "years",
     2592000: "months",
@@ -19,4 +19,4 @@ const TimeHelper = (date) => {
   return Math.floor(seconds) + " seconds";
 };
 
-export default TimeHelper;
+export default timeHelper;
