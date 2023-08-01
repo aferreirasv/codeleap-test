@@ -1,41 +1,121 @@
-import { Typography, Paper, TextField, IconButton } from "@mui/material";
+import {
+  Typography,
+  Paper,
+  TextField,
+  IconButton,
+  Button,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import "./MainPage.css";
 import TextButton from "../../components/TextButton/TextButton";
 import Post from "../../components/Post/Post";
 import { useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { listPosts, loadPage } from "../../actions/api/list";
+import { createPost } from "../../actions/api/create";
 
 const MainPage = (props) => {
+  const username = "Alan";
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([
-    {
-      title: "Lorem Ipsum 0",
-      author: "Alan",
-      timestamp: new Date("2023-07-31T20:04:00"),
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam suscipit risus sed tempor porta. Mauris volutpat diam mauris, sit amet malesuada leo congue eget.",
-    },
-    {
-      title: "Lorem Ipsum 1",
-      author: "Renan",
-      timestamp: new Date("2023-07-31T17:44:00"),
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam suscipit risus sed tempor porta. Mauris volutpat diam mauris, sit amet malesuada leo congue eget.",
-    },
-    {
-      title: "Lorem Ipsum 2",
-      author: "Renan",
-      timestamp: new Date("2023-07-31T15:44:00"),
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam suscipit risus sed tempor porta. Mauris volutpat diam mauris, sit amet malesuada leo congue eget.",
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+  const [nextPage, setNextPage] = useState("");
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [newPost, setNewPost] = useState({ title: "", content: "" });
+
+  const handleScroll = () => {
+    setScrollPosition(window.scrollY);
+  };
+  const handleScrollButton = (e) => {
+    let smoothThreshold = 10000;
+    if (scrollPosition > smoothThreshold) {
+      window.scrollTo({ top: 0 });
+      return;
+    }
+    const smoothScroll = (y) => {
+      if (y > 0) {
+        return setTimeout(() => {
+          window.scrollTo(0, y);
+          smoothScroll(y - scrollPosition / 10);
+        }, 10);
+      }
+      window.scrollTo(0, 0);
+    };
+    smoothScroll(scrollPosition);
+    setScrollPosition(0);
+  };
+  const handleNewPostChange = (e) => {
+    setNewPost((prev) => {
+      let post = Object.assign({}, prev);
+      post[e.target.name] = e.target.value;
+      console.log(post);
+      return post;
+    });
+  };
+  const handleNewPostSubmit = async (e) => {
+    try {
+      let data = newPost;
+      data.username = username;
+      let response = await createPost(data);
+      console.log(response);
+      fetchPosts();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const fetchPosts = async () => {
+    try {
+      let response = await listPosts();
+      setPosts(response.data.results);
+      setNextPage(response.data.next);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const loadNextPage = async (page) => {
+    try {
+      let response = await loadPage(page);
+      setPosts([...posts, ...response.data.results]);
+      setNextPage(response.data.next);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
       <div className="MainPageRoot">
+        {scrollPosition > 300 ? (
+          <div className="ScrollUpButtonContainer">
+            <Button
+              variant="contained"
+              startIcon={<ArrowUpwardIcon sx={{ color: "white" }} />}
+              onClick={handleScrollButton}
+            >
+              <Typography
+                variant="body"
+                color={"white"}
+                sx={{ fontWeight: "600" }}
+              >
+                Back to start
+              </Typography>
+            </Button>
+          </div>
+        ) : null}
         <header className="MainPageHeader">
           <Typography
             variant="body1"
@@ -56,6 +136,7 @@ const MainPage = (props) => {
             </IconButton>
           </div>
         </header>
+
         <div className="MainPageContent">
           <div className="MainPageNewPostContainer">
             <Paper
@@ -80,14 +161,24 @@ const MainPage = (props) => {
                   <Typography align="left" variant="body2">
                     Title
                   </Typography>
-                  <TextField placeholder="Hello World" fullWidth size="small" />
+                  <TextField
+                    name="title"
+                    placeholder="Hello World"
+                    fullWidth
+                    size="small"
+                    value={newPost.title}
+                    onChange={handleNewPostChange}
+                  />
                 </div>
                 <div className="MainPageInputContainer">
                   <Typography align="left" variant="body2">
                     Content
                   </Typography>
                   <TextField
+                    name="content"
                     placeholder="Content Here"
+                    value={newPost.content}
+                    onChange={handleNewPostChange}
                     fullWidth
                     rows={3}
                     multiline
@@ -99,7 +190,7 @@ const MainPage = (props) => {
                     disabled={false}
                     text="Create"
                     color="primary"
-                    onClick={null}
+                    onClick={handleNewPostSubmit}
                   />
                 </div>
               </div>
@@ -108,27 +199,13 @@ const MainPage = (props) => {
           <div>
             <InfiniteScroll
               dataLength={posts.length} //This is important field to render the next data
-              next={() => {}}
+              next={() => loadNextPage(nextPage)}
               hasMore={true}
               loader={<h4>Loading...</h4>}
               endMessage={
                 <p style={{ textAlign: "center" }}>
                   <b>Yay! You have seen it all</b>
                 </p>
-              }
-              // below props only if you need pull down functionality
-              refreshFunction={() => {}}
-              pullDownToRefresh
-              pullDownToRefreshThreshold={50}
-              pullDownToRefreshContent={
-                <h3 style={{ textAlign: "center" }}>
-                  &#8595; Pull down to refresh
-                </h3>
-              }
-              releaseToRefreshContent={
-                <h3 style={{ textAlign: "center" }}>
-                  &#8593; Release to refresh
-                </h3>
               }
             >
               {posts.map((post) => {

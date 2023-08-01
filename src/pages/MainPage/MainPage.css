@@ -50,3 +50,14 @@
 .MainPageInputContainer {
   padding-top: clamp(5px, 5%, 20px);
 }
+
+.ScrollUpButtonContainer {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  position: fixed;
+  top: 5px;
+  display: grid;
+  place-items: center;
+}

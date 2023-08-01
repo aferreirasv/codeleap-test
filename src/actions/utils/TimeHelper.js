@@ -12,6 +12,10 @@ const TimeHelper = (date) => {
     let i = seconds / interval;
     if (i > 1) return Math.floor(i) + " " + intervals[interval];
   }
+
+  if (seconds < 5) {
+    return "Right now";
+  }
   return Math.floor(seconds) + " seconds";
 };
 

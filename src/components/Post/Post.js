@@ -24,7 +24,7 @@ const Post = ({ post, user }) => {
     >
       <CardHeader
         action={
-          post.author === user ? (
+          post.username === user ? (
             <>
               <IconButton>
                 <DeleteForeverIcon sx={{ color: "white" }} />
@@ -47,11 +47,13 @@ const Post = ({ post, user }) => {
       />
       <CardContent>
         <div className="PostInfo">
-          <Typography>{"@" + post.author}</Typography>
-          <Typography>{TimeHelper(post.timestamp)}</Typography>
+          <Typography>{"@" + post.username}</Typography>
+          <Typography>{TimeHelper(new Date(post.created_datetime))}</Typography>
         </div>
         <div>
-          <Typography align="left">{post.content}</Typography>
+          <Typography align="left" sx={{ wordBreak: "break-all" }}>
+            {post.content}
+          </Typography>
         </div>
       </CardContent>
     </Card>
