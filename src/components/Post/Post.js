@@ -19,6 +19,7 @@ const Post = ({ post, user }) => {
         maxWidth: "1080px",
         border: "1px solid",
         borderColor: "#cacaca",
+        borderRadius: "clamp(5px, 15px, 20px);",
       }}
     >
       <CardHeader
@@ -26,10 +27,10 @@ const Post = ({ post, user }) => {
           post.author === user ? (
             <>
               <IconButton>
-                <DeleteForeverIcon color="secondary" />
+                <DeleteForeverIcon sx={{ color: "white" }} />
               </IconButton>
               <IconButton>
-                <EditNoteIcon color="secondary" />
+                <EditNoteIcon sx={{ color: "white" }} />
               </IconButton>
             </>
           ) : null
