@@ -10,7 +10,7 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import timeHelper from "../../actions/utils/timeHelper";
 import "./Post.css";
 
-const Post = ({ post, user }) => {
+const Post = ({ post, user, handleEditOpen, handleDeleteOpen }) => {
   return (
     <Card
       sx={{
@@ -25,10 +25,10 @@ const Post = ({ post, user }) => {
         action={
           post.username === user ? (
             <>
-              <IconButton>
+              <IconButton onClick={handleDeleteOpen}>
                 <DeleteForeverIcon sx={{ color: "white" }} />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={handleEditOpen}>
                 <EditNoteIcon sx={{ color: "white" }} />
               </IconButton>
             </>

@@ -61,3 +61,7 @@
   display: grid;
   place-items: center;
 }
+
+.ModalParent {
+  width: 100%;
+}

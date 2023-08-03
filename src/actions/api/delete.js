@@ -5,10 +5,7 @@ const BASE_API_URL =
 const deletePost = (id) => {
   return axios({
     method: "delete",
-    url: BASE_API_URL,
-    params: {
-      id: id,
-    },
+    url: BASE_API_URL + `${id}/`,
   });
 };
 

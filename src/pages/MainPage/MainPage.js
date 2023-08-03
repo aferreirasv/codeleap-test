@@ -15,18 +15,27 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect, useState } from "react";
 import { listPosts, loadPage } from "../../actions/api/list";
 import { createPost } from "../../actions/api/create";
+import { deletePost } from "../../actions/api/delete";
+import { patchPost } from "../../actions/api/patch";
 import { useSelector, useDispatch } from "react-redux";
-import { update } from "../../redux/username";
+import { update as updateUsername } from "../../redux/username";
+import { update as updateEditPost } from "../../redux/editPost";
 import { Navigate } from "react-router-dom";
+import EditModal from "../../components/EditModal/EditModal";
+import DeleteModal from "../../components/DeleteModal/DeleteModal";
 
 const MainPage = (props) => {
   const username = useSelector((state) => state.username.value);
+  const editedPost = useSelector((state) => state.editPost.value);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
   const [nextPage, setNextPage] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [newPost, setNewPost] = useState({ title: "", content: "" });
+  const [focusPost, setFocusPost] = useState(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const smoothScroll = (y) => {
     if (y > 0) {
       return setTimeout(() => {
@@ -60,12 +69,13 @@ const MainPage = (props) => {
       data.username = username;
       await createPost(data);
       fetchPosts();
+      setNewPost({ title: "", content: "" });
     } catch (e) {
       console.error(e);
     }
   };
   const handleLogout = () => {
-    dispatch(update(""));
+    dispatch(updateUsername(""));
     navigate("/signup");
   };
   const fetchPosts = async () => {
@@ -88,6 +98,46 @@ const MainPage = (props) => {
     }
   };
 
+  const handleDeleteClose = () => {
+    setFocusPost(null);
+    setDeleteOpen(false);
+  };
+
+  const handleDeleteOpen = (e, post) => {
+    setFocusPost(post);
+    setDeleteOpen(true);
+  };
+
+  const handleDelete = async (e) => {
+    try {
+      await deletePost(focusPost.id);
+      fetchPosts();
+      handleDeleteClose();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const handleEditClose = (e) => {
+    dispatch(updateEditPost({ title: "", content: "" }));
+    setFocusPost(null);
+    setEditOpen(false);
+  };
+
+  const handleEditOpen = (e, post) => {
+    dispatch(updateEditPost({ title: post.title, content: post.content }));
+    setFocusPost(post);
+    setEditOpen(true);
+  };
+  const handleEdit = async (e) => {
+    try {
+      await patchPost(focusPost.id, editedPost);
+      fetchPosts();
+      handleEditClose();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -102,6 +152,21 @@ const MainPage = (props) => {
   return (
     <>
       {username === "" ? <Navigate to="/signup" /> : null}
+      <div className="ModalParent">
+        <EditModal
+          open={editOpen}
+          handleClose={handleEditClose}
+          handleEdit={handleEdit}
+          post={focusPost}
+        />
+
+        <DeleteModal
+          open={deleteOpen}
+          handleClose={handleDeleteClose}
+          handleDelete={handleDelete}
+        />
+      </div>
+
       <div className="MainPageRoot">
         {scrollPosition > 300 ? (
           <div className="ScrollUpButtonContainer">
@@ -210,7 +275,13 @@ const MainPage = (props) => {
               {posts.map((post) => {
                 return (
                   <div className="MainPagePostList">
-                    <Post post={post} user={"Alan"} />
+                    <Post
+                      key={post.id}
+                      post={post}
+                      user={username}
+                      handleEditOpen={(e) => handleEditOpen(e, post)}
+                      handleDeleteOpen={(e) => handleDeleteOpen(e, post)}
+                    />
                   </div>
                 );
               })}

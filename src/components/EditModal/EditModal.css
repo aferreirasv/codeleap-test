@@ -1,0 +1,8 @@
+.EditModalActions {
+  padding-bottom: clamp(5px, 5%, 20px);
+  display: flex;
+  justify-content: space-between;
+}
+.EditModalInputContainer {
+  padding-top: clamp(5px, 5%, 20px);
+}
