@@ -1,34 +1,33 @@
-import {
-  Typography,
-  Paper,
-  TextField,
-  IconButton,
-  Button,
-} from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import "./MainPage.css";
-import TextButton from "../../components/TextButton/TextButton";
-import Post from "../../components/Post/Post";
+import { Typography, Paper, IconButton, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect, useState } from "react";
-import { listPosts, loadPage } from "../../actions/api/list";
-import { createPost } from "../../actions/api/create";
-import { deletePost } from "../../actions/api/delete";
-import { patchPost } from "../../actions/api/patch";
+import {
+  patchPost,
+  deletePost,
+  listPosts,
+  loadPage,
+  createPost,
+} from "../../actions/api/api";
 import { useSelector, useDispatch } from "react-redux";
 import { update as updateUsername } from "../../redux/username";
 import { update as updateEditPost } from "../../redux/editPost";
 import { Navigate } from "react-router-dom";
-import EditModal from "../../components/EditModal/EditModal";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
+import EditModal from "../../components/EditModal/EditModal";
+import InfiniteScroll from "react-infinite-scroll-component";
+import LoadingIcon from "../../components/LoadingIcon/LoadingIcon";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Post from "../../components/Post/Post";
+import PostForm from "../../components/PostForm/PostForm";
+import TextButton from "../../components/TextButton/TextButton";
 
 const MainPage = (props) => {
-  const username = useSelector((state) => state.username.value);
-  const editedPost = useSelector((state) => state.editPost.value);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const username = useSelector((state) => state.username.value);
+  const editedPost = useSelector((state) => state.editPost.value);
   const [posts, setPosts] = useState([]);
   const [nextPage, setNextPage] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -221,33 +220,13 @@ const MainPage = (props) => {
                 >
                   What's on your mind?
                 </Typography>
-                <div className="MainPageInputContainer">
-                  <Typography align="left" variant="body2">
-                    Title
-                  </Typography>
-                  <TextField
-                    name="title"
-                    placeholder="Hello World"
-                    fullWidth
-                    size="small"
-                    value={newPost.title}
-                    onChange={handleNewPostChange}
-                  />
-                </div>
-                <div className="MainPageInputContainer">
-                  <Typography align="left" variant="body2">
-                    Content
-                  </Typography>
-                  <TextField
-                    name="content"
-                    placeholder="Content Here"
-                    value={newPost.content}
-                    onChange={handleNewPostChange}
-                    fullWidth
-                    rows={3}
-                    multiline
-                  />
-                </div>
+                <PostForm
+                  onContentChange={handleNewPostChange}
+                  onTitleChange={handleNewPostChange}
+                  titleValue={newPost.title}
+                  contentValue={newPost.content}
+                />
+
                 <div className="MainPageCreateButtonContainer">
                   <div />
                   <TextButton
@@ -262,15 +241,11 @@ const MainPage = (props) => {
           </div>
           <div>
             <InfiniteScroll
-              dataLength={posts.length} //This is important field to render the next data
+              dataLength={posts.length}
               next={() => loadNextPage(nextPage)}
               hasMore={true}
-              loader={<h4>Loading...</h4>}
-              endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
+              loader={<LoadingIcon />}
+              endMessage={<Typography>We're out of posts 😞</Typography>}
             >
               {posts.map((post) => {
                 return (

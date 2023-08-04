@@ -3,13 +3,12 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
-  Typography,
-  TextField,
 } from "@mui/material";
 import TextButton from "../TextButton/TextButton";
 import "./EditModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTitle, updateContent } from "../../redux/editPost";
+import PostForm from "../PostForm/PostForm";
 
 const EditModal = ({ open, handleClose, handleEdit, post }) => {
   const editPost = useSelector((state) => state.editPost.value);
@@ -26,33 +25,12 @@ const EditModal = ({ open, handleClose, handleEdit, post }) => {
     <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogTitle>Edit item</DialogTitle>
       <DialogContent>
-        <div className="EditModalInputContainer">
-          <Typography align="left" variant="body2">
-            Title
-          </Typography>
-          <TextField
-            name="title"
-            placeholder="Hello World"
-            fullWidth
-            size="small"
-            value={editPost.title}
-            onChange={handleEditTitleChange}
-          />
-        </div>
-        <div className="EditModalInputContainer">
-          <Typography align="left" variant="body2">
-            Content
-          </Typography>
-          <TextField
-            name="content"
-            placeholder="Content Here"
-            value={editPost.content}
-            onChange={handleEditContentChange}
-            fullWidth
-            rows={3}
-            multiline
-          />
-        </div>
+        <PostForm
+          onContentChange={handleEditContentChange}
+          onTitleChange={handleEditTitleChange}
+          titleValue={editPost.title}
+          contentValue={editPost.content}
+        />
       </DialogContent>
       <DialogActions>
         <div className="EditModalActions">
