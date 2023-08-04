@@ -1,5 +1,5 @@
 import "./SignUp.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Paper, TextField, Typography } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
 import TextButton from "../../components/TextButton/TextButton";
@@ -14,12 +14,22 @@ const SignUp = (props) => {
   const handleUsername = (e) => {
     setInputValue(e.currentTarget.value);
   };
-
+  const checkUsername = () => {
+    let username = localStorage.getItem("username");
+    console.log(username);
+    if (username) {
+      dispatch(update(username));
+      navigate("/");
+    }
+  };
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     dispatch(update(inputValue));
+    localStorage.setItem("username", inputValue);
     navigate("/");
   };
+
+  useEffect(checkUsername, []);
   return (
     <>
       {username !== "" ? <Navigate to="/" /> : null}

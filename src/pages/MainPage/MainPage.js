@@ -87,6 +87,7 @@ const MainPage = (props) => {
   };
   const handleLogout = () => {
     dispatch(updateUsername(""));
+    localStorage.clear();
     navigate("/signup");
   };
   const fetchPosts = async () => {
