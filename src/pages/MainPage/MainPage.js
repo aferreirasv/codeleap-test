@@ -1,5 +1,12 @@
 import "./MainPage.css";
-import { Typography, Paper, IconButton, Button } from "@mui/material";
+import {
+  Typography,
+  Paper,
+  IconButton,
+  Button,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -35,6 +42,8 @@ const MainPage = (props) => {
   const [focusPost, setFocusPost] = useState(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [error, setError] = useState(false);
   const smoothScroll = (y) => {
     if (y > 0) {
       return setTimeout(() => {
@@ -69,8 +78,11 @@ const MainPage = (props) => {
       await createPost(data);
       fetchPosts();
       setNewPost({ title: "", content: "" });
+      setSnackbarMessage("Your post has been created!");
     } catch (e) {
       console.error(e);
+      setSnackbarMessage("There was an error trying to create your post.");
+      setError(true);
     }
   };
   const handleLogout = () => {
@@ -84,9 +96,10 @@ const MainPage = (props) => {
       setNextPage(response.data.next);
     } catch (e) {
       console.error(e);
+      setSnackbarMessage("There was an error communicating with the server.");
+      setError(true);
     }
   };
-
   const loadNextPage = async (page) => {
     try {
       let response = await loadPage(page);
@@ -94,26 +107,28 @@ const MainPage = (props) => {
       setNextPage(response.data.next);
     } catch (e) {
       console.error(e);
+      setSnackbarMessage("There was an error communicating with the server.");
+      setError(true);
     }
   };
-
   const handleDeleteClose = () => {
     setFocusPost(null);
     setDeleteOpen(false);
   };
-
   const handleDeleteOpen = (e, post) => {
     setFocusPost(post);
     setDeleteOpen(true);
   };
-
   const handleDelete = async (e) => {
     try {
       await deletePost(focusPost.id);
       fetchPosts();
       handleDeleteClose();
+      setSnackbarMessage("Your post has been deleted.");
     } catch (e) {
       console.error(e);
+      setSnackbarMessage("There was an error communicating with the server.");
+      setError(true);
     }
   };
   const handleEditClose = (e) => {
@@ -121,7 +136,6 @@ const MainPage = (props) => {
     setFocusPost(null);
     setEditOpen(false);
   };
-
   const handleEditOpen = (e, post) => {
     dispatch(updateEditPost({ title: post.title, content: post.content }));
     setFocusPost(post);
@@ -132,11 +146,17 @@ const MainPage = (props) => {
       await patchPost(focusPost.id, editedPost);
       fetchPosts();
       handleEditClose();
+      setSnackbarMessage("Your post has been edited.");
     } catch (e) {
       console.error(e);
+      setSnackbarMessage("There was an error communicating with the server.");
+      setError(true);
     }
   };
-
+  const handleSnackbarClose = (e) => {
+    setSnackbarMessage("");
+    setError(false);
+  };
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -158,14 +178,12 @@ const MainPage = (props) => {
           handleEdit={handleEdit}
           post={focusPost}
         />
-
         <DeleteModal
           open={deleteOpen}
           handleClose={handleDeleteClose}
           handleDelete={handleDelete}
         />
       </div>
-
       <div className="MainPageRoot">
         {scrollPosition > 300 ? (
           <div className="ScrollUpButtonContainer">
@@ -199,8 +217,20 @@ const MainPage = (props) => {
             </IconButton>
           </div>
         </header>
-
         <div className="MainPageContent">
+          <Snackbar
+            open={snackbarMessage !== ""}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity={error ? "error" : "success"}
+              sx={{ width: "100%" }}
+            >
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
           <div className="MainPageNewPostContainer">
             <Paper
               sx={{
@@ -226,11 +256,10 @@ const MainPage = (props) => {
                   titleValue={newPost.title}
                   contentValue={newPost.content}
                 />
-
                 <div className="MainPageCreateButtonContainer">
                   <div />
                   <TextButton
-                    disabled={false}
+                    disabled={!(newPost.title && newPost.content)}
                     text="Create"
                     color="primary"
                     onClick={handleNewPostSubmit}

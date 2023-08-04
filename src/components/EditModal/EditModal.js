@@ -3,6 +3,7 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
+  Typography,
 } from "@mui/material";
 import TextButton from "../TextButton/TextButton";
 import "./EditModal.css";
@@ -23,7 +24,17 @@ const EditModal = ({ open, handleClose, handleEdit, post }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-      <DialogTitle>Edit item</DialogTitle>
+      <DialogTitle>
+        <Typography
+          variant="body1"
+          align="left"
+          sx={{
+            fontWeight: "700",
+          }}
+        >
+          Edit item
+        </Typography>
+      </DialogTitle>
       <DialogContent>
         <PostForm
           onContentChange={handleEditContentChange}
@@ -35,13 +46,23 @@ const EditModal = ({ open, handleClose, handleEdit, post }) => {
       <DialogActions>
         <div className="EditModalActions">
           <div />
-          <TextButton disabled={false} text="Cancel" onClick={handleClose} />
-          <TextButton
-            onClick={handleEdit}
-            disabled={false}
-            text="Save"
-            color="green"
-          />
+          <div className="EditModalButtonContainer">
+            <div className="EditModalButton">
+              <TextButton
+                disabled={false}
+                text="Cancel"
+                onClick={handleClose}
+              />
+            </div>
+            <div className="EditModalButton">
+              <TextButton
+                onClick={handleEdit}
+                disabled={!(editPost.title && editPost.content)}
+                text="Save"
+                color="green"
+              />
+            </div>
+          </div>
         </div>
       </DialogActions>
     </Dialog>

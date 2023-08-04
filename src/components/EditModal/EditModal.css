@@ -1,5 +1,12 @@
 .EditModalActions {
-  padding-bottom: clamp(5px, 5%, 20px);
   display: flex;
   justify-content: space-between;
+  padding: clamp(5px, 5%, 20px);
+  padding-top: 0;
+}
+.EditModalButton {
+  margin-left: 1px;
+}
+.EditModalButtonContainer {
+  display: flex;
 }

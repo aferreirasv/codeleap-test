@@ -15,18 +15,24 @@ const DeleteModal = ({ open, handleClose, handleDelete }) => {
       <DialogActions>
         <div className="DeleteModalActions">
           <div />
-          <TextButton
-            disabled={false}
-            text="Cancel"
-            onClick={handleClose}
-            autoFocus
-          />
-          <TextButton
-            onClick={handleDelete}
-            disabled={false}
-            text="Delete"
-            color="red"
-          />
+          <div className="DeleteModalButtonContainer">
+            <div className="DeleteModalButton">
+              <TextButton
+                disabled={false}
+                text="Cancel"
+                onClick={handleClose}
+                autoFocus
+              />
+            </div>
+            <div className="DeleteModalButton">
+              <TextButton
+                onClick={handleDelete}
+                disabled={false}
+                text="Delete"
+                color="red"
+              />
+            </div>
+          </div>
         </div>
       </DialogActions>
     </Dialog>

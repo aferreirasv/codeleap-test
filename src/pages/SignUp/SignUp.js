@@ -22,18 +22,14 @@ const SignUp = (props) => {
   };
   return (
     <>
-      {
-        username !== "" ? (
-          <Navigate to="/" />
-        ) : null /* Check if user is logged in*/
-      }
+      {username !== "" ? <Navigate to="/" /> : null}
       <div className="SignUp">
         <Paper sx={{ width: "90vw", maxWidth: "500px" }}>
           <div className="SignUpCard">
             <div className="SignUpHeader">
               <Typography
                 variant="body1"
-                align="start"
+                align="left"
                 sx={{
                   fontWeight: "800",
                 }}
@@ -42,7 +38,7 @@ const SignUp = (props) => {
               </Typography>
             </div>
             <div>
-              <Typography align="start">Please enter your username</Typography>
+              <Typography align="left">Please enter your username</Typography>
               <TextField
                 placeholder="John Doe"
                 value={inputValue}
