@@ -4,11 +4,9 @@
   display: grid;
   place-items: center;
 }
-
 .SignUpCard {
   padding: 5%;
 }
-
 .SignUpButtonContainer {
   width: 100%;
   padding-top: 5%;
@@ -16,7 +14,6 @@
   justify-content: space-between;
   caret-color: transparent;
 }
-
 .SignUpHeader {
   width: 100%;
   padding-bottom: 5%;

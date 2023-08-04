@@ -28,7 +28,6 @@ const SignUp = (props) => {
     localStorage.setItem("username", inputValue);
     navigate("/");
   };
-
   useEffect(checkUsername, []);
   return (
     <>
