@@ -1,0 +1,14 @@
+.PostHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #7696ed;
+}
+.PostInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.PostContent {
+}

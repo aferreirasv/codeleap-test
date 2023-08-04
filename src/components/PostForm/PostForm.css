@@ -1,0 +1,3 @@
+.PostFormInputContainer {
+  padding-top: clamp(5px, 5%, 20px);
+}

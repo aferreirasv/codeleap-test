@@ -1,0 +1,66 @@
+.MainPageRoot {
+  width: 100%;
+  height: 100%;
+}
+
+.MainPageHeader {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 5px 15px 5px 15px;
+  justify-content: space-between;
+  background-color: #7696ed;
+  display: flex;
+  align-items: center;
+}
+
+.MainPageContent {
+  width: 100%;
+  height: auto;
+  background-color: #fafafa;
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  padding-top: clamp(10px, 2%, 25px);
+}
+
+.MainPageNewPostForm {
+  padding-left: clamp(10px, 5%, 25px);
+  padding-right: clamp(10px, 5%, 25px);
+  padding-top: clamp(5px, 5%, 20px);
+  padding-bottom: clamp(5px, 5%, 20px);
+  justify-content: start;
+}
+
+.MainPagePostList {
+  margin-top: clamp(5px, 3%, 15px);
+  width: 100%;
+}
+
+.MainPageCreateButtonContainer {
+  width: 100%;
+  padding-top: clamp(5px, 5%, 20px);
+  display: flex;
+  justify-content: space-between;
+  caret-color: transparent;
+}
+
+.MainPageInputContainer {
+  padding-top: clamp(5px, 5%, 20px);
+}
+
+.ScrollUpButtonContainer {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  position: fixed;
+  top: 5px;
+  display: grid;
+  place-items: center;
+}
+
+.ModalParent {
+  width: 100%;
+}

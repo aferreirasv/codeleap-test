@@ -1,0 +1,11 @@
+.DeleteModalActions {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: clamp(5px, 5%, 20px);
+}
+.DeleteModalButton {
+  margin-left: 1px;
+}
+.DeleteModalButtonContainer {
+  display: flex;
+}
